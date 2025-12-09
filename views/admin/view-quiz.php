@@ -19,27 +19,19 @@ if(!$quiz) {
 $pageTitle = 'View Quiz - ' . $quiz['title'];
 $isAdmin = true;
 ?>
-<?php include '../../includes/header.php'; ?>
+<?php include '../../includes/admin-layout.php'; ?>
 
 <div class="container mt-5 pt-5">
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <a href="quizzes.php" class="btn btn-secondary mb-3">
-                <i class="fas fa-arrow-left"></i> Back to Quizzes
-            </a>
-        </div>
-    </div>
-
     <!-- Quiz Header -->
     <div class="card shadow-lg mb-4">
         <div class="card-header text-white" style="background: linear-gradient(135deg, #667eea, #764ba2);">
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="mb-0"><i class="fas fa-clipboard-list"></i> <?php echo htmlspecialchars($quiz['title']); ?></h3>
                 <div>
-                    <a href="quiz-builder.php?id=<?php echo $quiz['id']; ?>" class="btn btn-light btn-sm">
+                    <a href="<?php echo APP_URL; ?>/views/admin/quiz-builder.php?id=<?php echo $quiz['id']; ?>" class="btn btn-light btn-sm">
                         <i class="fas fa-edit"></i> Edit Questions
                     </a>
-                    <a href="view-responses.php?id=<?php echo $quiz['id']; ?>" class="btn btn-light btn-sm">
+                    <a href="<?php echo APP_URL; ?>/views/admin/view-responses.php?id=<?php echo $quiz['id']; ?>" class="btn btn-light btn-sm">
                         <i class="fas fa-chart-bar"></i> View Responses
                     </a>
                 </div>
@@ -178,4 +170,4 @@ function deleteQuestion(questionId) {
 }
 </script>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-layout-footer.php'; ?>

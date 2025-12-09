@@ -9,7 +9,6 @@ session_destroy();
 if (isset($_COOKIE[session_name()])) {
     setcookie(session_name(), '', time() - 3600, '/');
 }
-
-header("Location: views/student/landing.php");
-exit;
+header("Location: " . APP_URL . "/views/student/landing.php");
+exit();
 ?>

@@ -4,14 +4,17 @@ require_once '../../config/config.php';
 require_once '../../models/Quiz.php';
 include '../../includes/header.php';
 
-if(!isset($_SESSION['admin_id'])) redirect('views/admin/login.php');
+if(!isset($_SESSION['admin_id'])) {
+    header("Location: " . APP_URL . "/views/admin/login.php");
+    exit();
+}
 
 $quizId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $quiz = new Quiz();
 $quizData = $quiz->getById($quizId);
 $questions = $quiz->getQuestions($quizId);
 
-if(!$quizData) redirect('quizzes.php');
+if(!$quizData) redirect('/views/admin/quizzes.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_question'])) {
     $questionText = sanitize($_POST['question_text']);
@@ -22,15 +25,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_question'])) {
     $correctAnswer = $_POST['correct_answer'];
     
     $quiz->addQuestion($quizId, $questionText, $choiceA, $choiceB, $choiceC, $choiceD, $correctAnswer);
-    redirect('quiz-builder.php?id=' . $quizId);
+    redirect('/views/admin/quiz-builder.php?id=' . $quizId);
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Quiz Builder</title>
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-</head>
+<?php
+$pageTitle = 'Quiz Builder - ' . $quizData['title'];
+$isAdmin = true;
+include '../../includes/admin-layout.php';
+?>
 <body>
     <div class="container mt-5">
         <div class="row">
@@ -107,7 +109,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_question'])) {
                             </ol>
                         <?php endif; ?>
                         <hr>
-                        <a href="view-quiz.php?id=<?php echo $quizId; ?>" class="btn btn-primary btn-block">Finish & View Quiz</a>
+                        <a href="<?php echo APP_URL; ?>/views/admin/view-quiz.php?id=<?php echo $quizId; ?>" class="btn btn-primary btn-block">Finish & View Quiz</a>
                     </div>
                 </div>
             </div>

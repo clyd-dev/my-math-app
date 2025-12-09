@@ -111,7 +111,7 @@ class Quiz {
     }
     
     public function getResponses($quizId) {
-        $stmt = $this->db->prepare("SELECT qr.*, s.name, s.grade, s.section 
+        $stmt = $this->db->prepare("SELECT qr.*, s.name, s.section 
                                      FROM quiz_responses qr 
                                      JOIN students s ON qr.student_id = s.id 
                                      WHERE qr.quiz_id = ? 

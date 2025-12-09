@@ -35,17 +35,9 @@ if($totalResponses > 0) {
 $pageTitle = 'Quiz Responses - ' . $quiz['title'];
 $isAdmin = true;
 ?>
-<?php include '../../includes/header.php'; ?>
+<?php include '../../includes/admin-layout.php'; ?>
 
 <div class="container mt-5 pt-5">
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <a href="view-quiz.php?id=<?php echo $quiz['id']; ?>" class="btn btn-secondary mb-3">
-                <i class="fas fa-arrow-left"></i> Back to Quiz
-            </a>
-        </div>
-    </div>
-
     <!-- Quiz Info & Statistics -->
     <div class="row mb-4">
         <div class="col-md-12">
@@ -210,4 +202,4 @@ function downloadCSV(csv, filename) {
 }
 </script>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-layout-footer.php'; ?>

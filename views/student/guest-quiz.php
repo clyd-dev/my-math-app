@@ -12,7 +12,8 @@ $error = '';
 
 if(empty($shareCode)) {
     $_SESSION['error_message'] = 'No quiz code provided';
-    redirect('landing.php');
+   header("Location: " . APP_URL . "/views/student/landing.php");
+   exit();
 }
 
 $quizModel = new Quiz();
@@ -20,20 +21,19 @@ $quiz = $quizModel->getByShareCode($shareCode);
 
 if(!$quiz) {
     $_SESSION['error_message'] = 'Invalid quiz code';
-    redirect('landing.php');
+    header("Location: " . APP_URL . "/views/student/landing.php");
 }
 
 // Handle guest information submission
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_guest'])) {
     $name = sanitize($_POST['name']);
-    $grade = sanitize($_POST['grade']);
     $section = sanitize($_POST['section']);
     
-    if(empty($name) || empty($grade) || empty($section)) {
+    if(empty($name) || empty($section)) {
         $error = 'All fields are required';
     } else {
         $studentModel = new Student();
-        $guestId = $studentModel->createGuest($name, $grade, $section);
+        $guestId = $studentModel->createGuest($name, $section);
         
         if($guestId) {
             $_SESSION['student_id'] = $guestId;

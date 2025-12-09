@@ -11,49 +11,47 @@ $students = $studentModel->getAll();
 
 $pageTitle = 'Manage Students';
 $isAdmin = true;
+
+$error = '';
+$success = '';
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = sanitize($_POST['name']);
+    $section = sanitize($_POST['section']);
+    $password = $_POST['password'];
+    
+    if(strlen($password) < 6) {
+        $error = 'Password must be at least 6 characters long';
+    } else {
+        $studentModel = new Student();
+        if($studentModel->register($name, $section,  $password)) {
+            $success = 'Registration successful!';
+        } else {
+            $error = 'Registration failed. Please try again.';
+        }
+    }
+}
+include '../../includes/admin-layout.php';
 ?>
-<?php include '../../includes/header.php'; ?>
-
 <div class="container-scroller">
-    <!-- Navbar -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-        <div class="navbar-brand-wrapper d-flex justify-content-center">
-            <a class="navbar-brand text-white" href="dashboard.php">
-                <i class="fas fa-graduation-cap"></i> Math Quiz Admin
-            </a>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item">
-                    <span class="text-white mr-3">Welcome, <?php echo $_SESSION['admin_name']; ?></span>
-                    <a href="logout.php" class="btn btn-sm btn-light">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
     <div class="container-fluid page-body-wrapper" style="margin-top: 70px;">
         <div class="container mt-4">
             <div class="row mb-4">
-                <div class="col-md-12">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 class="text-white"><i class="fas fa-users"></i> Manage Students</h2>
-                            <p class="text-white-50">Add, edit, or remove students from the system</p>
-                        </div>
-                        <div>
-                            <a href="dashboard.php" class="btn btn-light mr-2">
-                                <i class="fas fa-arrow-left"></i> Back to Dashboard
-                            </a>
-                            <button class="btn btn-success" data-toggle="modal" data-target="#addStudentModal">
-                                <i class="fas fa-plus"></i> Add New Student
-                            </button>
-                        </div>
-                    </div>
+                <div class="col-12">
+                    <h2 class="text-white"><i class="fas fa-users"></i> Manage Students</h2>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addStudentModal">
+                        <i class="fas fa-plus"></i> Add New Student
+                    </button>
                 </div>
             </div>
+            
+            <?php if($success): ?>
+                <div class="alert alert-success">
+                    <?php echo $success; ?>
+                </div>
+            <?php else: ?>
+                <div class="alert alert-danger"><?php echo $error; ?></div>
+            <?php endif; ?>
 
             <!-- Students Table -->
             <div class="card shadow-lg">
@@ -127,7 +125,7 @@ $isAdmin = true;
                     <span>&times;</span>
                 </button>
             </div>
-            <form method="POST" action="/student/register.php">
+            <form method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Full Name *</label>
@@ -178,4 +176,4 @@ function deleteStudent(id, name) {
 }
 </script>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-layout-footer.php'; ?>

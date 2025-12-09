@@ -4,7 +4,8 @@ require_once '../../config/config.php';
 require_once '../../models/Student.php';
 
 if(isset($_SESSION['student_id'])) {
-    redirect('views/student/dashboard.php');
+    header("Location: " . APP_URL . "/views/student/dashboard.php");
+    exit();
 }
 
 $error = '';

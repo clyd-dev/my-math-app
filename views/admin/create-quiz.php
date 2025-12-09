@@ -4,7 +4,10 @@ require_once '../../config/config.php';
 require_once '../../models/Quiz.php';
 include '../../includes/header.php';
 
-if(!isset($_SESSION['admin_id'])) redirect('views/admin/login.php');
+if(!isset($_SESSION['admin_id'])) {
+    header("Location: " . APP_URL . "/views/admin/login.php");
+    exit();
+}
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = sanitize($_POST['title']);
@@ -16,16 +19,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $quizId = $quiz->create($title, $date, $topic, $instructions, $_SESSION['admin_id']);
     
     if($quizId) {
-        redirect('quiz-builder.php?id=' . $quizId);
+        redirect('/views/admin/quiz-builder.php?id=' . $quizId);
     }
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Quiz</title>
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-</head>
+<?php
+$pageTitle = 'Create New Quiz';
+$isAdmin = true;
+include '../../includes/admin-layout.php';
+?>
 <body>
     <div class="container mt-5">
         <div class="card">
@@ -51,11 +53,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <textarea name="instructions" class="form-control" rows="3" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Create Quiz & Add Questions</button>
-                    <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
+                    <a href="<?php echo APP_URL; ?>/views/admin/dashboard.php" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>
     </div>
-    <?php include '../../includes/footer.php'; ?>
+    <?php include '../../includes/admin-layout-footer.php'; ?>
 </body>
 </html>

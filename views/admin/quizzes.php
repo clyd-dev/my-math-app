@@ -12,28 +12,9 @@ $quizzes = $quizModel->getAll();
 $pageTitle = 'Manage Quizzes';
 $isAdmin = true;
 ?>
-<?php include '../../includes/header.php'; ?>
+<?php include '../../includes/admin-layout.php'; ?>
 
 <div class="container-scroller">
-    <!-- Navbar -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-        <div class="navbar-brand-wrapper d-flex justify-content-center">
-            <a class="navbar-brand text-white" href="dashboard.php">
-                <i class="fas fa-graduation-cap"></i> Math Quiz Admin
-            </a>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item">
-                    <span class="text-white mr-3">Welcome, <?php echo $_SESSION['admin_name']; ?></span>
-                    <a href="logout.php" class="btn btn-sm btn-light">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
     <div class="container-fluid page-body-wrapper" style="margin-top: 70px;">
         <div class="container mt-4">
             <div class="row mb-4">
@@ -44,10 +25,7 @@ $isAdmin = true;
                             <p class="text-white-50">Manage your math quizzes</p>
                         </div>
                         <div>
-                            <a href="dashboard.php" class="btn btn-light mr-2">
-                                <i class="fas fa-arrow-left"></i> Back
-                            </a>
-                            <a href="create-quiz.php" class="btn btn-success">
+                            <a href="<?php echo APP_URL; ?>/views/admin/create-quiz.php" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Create New Quiz
                             </a>
                         </div>
@@ -158,4 +136,4 @@ function deleteQuiz(id, title) {
 }
 </script>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-layout-footer.php'; ?>

@@ -9,12 +9,14 @@ $quiz = new Quiz();
 $quizData = $quiz->getById($quizId);
 $questions = $quiz->getQuestions($quizId);
 
-if(!$quizData) redirect('dashboard.php');
-
+if(!$quizData) {
+    header("Location: " . APP_URL . "/views/student/dashboard.php");
+   exit();
+}
 // Check if already answered
 if(isset($_SESSION['student_id'])) {
     if($quiz->hasStudentAnswered($quizId, $_SESSION['student_id'])) {
-        redirect('quiz-result.php?id=' . $quizId);
+        redirect('views/student/quiz-result.php?id=' . $quizId);
     }
 }
 
@@ -25,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $responseId = $quiz->submitResponse($quizId, $studentId, $answers);
     
     if($responseId) {
-        redirect('quiz-result.php?response=' . $responseId);
+        redirect('views/student/quiz-result.php?response=' . $responseId);
     }
 }
 ?>

@@ -4,7 +4,8 @@ require_once '../../config/config.php';
 require_once '../../models/Student.php';
 
 if(isset($_SESSION['student_id'])) {
-    redirect('dashboard.php');
+    header("Location: " . APP_URL . "/views/student/dashboard.php");
+    exit();
 }
 
 $error = '';
@@ -49,7 +50,7 @@ include '../../includes/header.php';
                             <div class="alert alert-success">
                                 <?php echo $success; ?>
                                 <br>
-                                <a href="login.php" class="btn btn-primary btn-sm mt-2">Login Now</a>
+                                <a href="<?php echo APP_URL; ?>/views/student/login.php" class="btn btn-primary btn-sm mt-2">Login Now</a>
                             </div>
                         <?php else: ?>
                             <div class="text-center mb-4">
@@ -96,8 +97,8 @@ include '../../includes/header.php';
                         
                         <div class="text-center">
                             <p class="mb-2">Already have an account?</p>
-                            <a href="login.php" class="btn btn-outline-primary">Login Here</a>
-                            <a href="landing.php" class="btn btn-outline-secondary ml-2">Back to Home</a>
+                            <a href="<?php echo APP_URL; ?>/views/student/login.php" class="btn btn-outline-primary">Login Here</a>
+                            <a href="<?php echo APP_URL; ?>/views/student/landing.php" class="btn btn-outline-secondary ml-2">Back to Home</a>
                         </div>
                     </div>
                 </div>

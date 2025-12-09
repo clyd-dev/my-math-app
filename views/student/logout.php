@@ -14,7 +14,7 @@ if (isset($_COOKIE[session_name()])) {
 }
 
 // Redirect to landing page
-redirect('views/student/landing.php');
-exit;
+header("Location: " . APP_URL . "/views/student/landing.php");
+exit();
 
 ?>
