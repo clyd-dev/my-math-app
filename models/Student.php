@@ -8,10 +8,10 @@ class Student {
         $this->db = Database::getInstance()->getConnection();
     }
     
-    public function register($name, $grade, $section, $password) {
+    public function register($name, $section, $password) {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->db->prepare("INSERT INTO students (name, grade, section, password) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$name, $grade, $section, $hashedPassword]);
+        $stmt = $this->db->prepare("INSERT INTO students (name, section, password) VALUES (?, ?, ?)");
+        return $stmt->execute([$name, $section, $hashedPassword]);
     }
     
     public function login($name, $password) {
@@ -27,9 +27,9 @@ class Student {
         return false;
     }
     
-    public function createGuest($name, $grade, $section) {
-        $stmt = $this->db->prepare("INSERT INTO students (name, grade, section, is_guest) VALUES (?, ?, ?, 1)");
-        $stmt->execute([$name, $grade, $section]);
+    public function createGuest($name, $section) {
+        $stmt = $this->db->prepare("INSERT INTO students (name, section, is_guest) VALUES (?, ?, 1)");
+        $stmt->execute([$name, $section]);
         return $this->db->lastInsertId();
     }
     
@@ -44,9 +44,9 @@ class Student {
         return $stmt->fetchAll();
     }
     
-    public function update($id, $name, $grade, $section) {
-        $stmt = $this->db->prepare("UPDATE students SET name=?, grade=?, section=? WHERE id=?");
-        return $stmt->execute([$name, $grade, $section, $id]);
+    public function update($id, $name, $section) {
+        $stmt = $this->db->prepare("UPDATE students SET name=?, section=? WHERE id=?");
+        return $stmt->execute([$name, $section, $id]);
     }
     
     public function delete($id) {

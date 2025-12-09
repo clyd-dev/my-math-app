@@ -3,7 +3,7 @@ require_once '../../config/config.php';
 require_once '../../models/Quiz.php';
 
 if(!isset($_SESSION['admin_id'])) {
-    redirect('../admin/login.php');
+    redirect('views/admin/login.php');
 }
 
 $quizModel = new Quiz();

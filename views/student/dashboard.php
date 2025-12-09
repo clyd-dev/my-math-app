@@ -5,7 +5,7 @@ require_once '../../models/Student.php';
 
 
 if(!isset($_SESSION['student_id'])) {
-    redirect('landing.php');
+    redirect('views/student/landing.php');
 }
 
 $studentId = $_SESSION['student_id'];

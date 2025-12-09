@@ -4,7 +4,7 @@ require_once '../../models/Admin.php';
 include '../../includes/header.php';
 
 if(isset($_SESSION['admin_id'])) {
-    redirect('dashboard.php');
+    redirect('views/admin/dashboard.php');
 }
 
 $error = '';
@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $admin = new Admin();
     if($admin->login($username, $password)) {
-        redirect('dashboard.php');
+        redirect('views/admin/dashboard.php');
     } else {
         $error = 'Invalid username or password';
     }

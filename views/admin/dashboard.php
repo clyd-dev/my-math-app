@@ -7,7 +7,7 @@ include '../../includes/header.php';
 
 // Check if admin is logged in
 if(!isset($_SESSION['admin_id'])) {
-    redirect('login.php');
+    redirect('views/admin/login.php');
 }
 
 $adminModel = new Admin();

@@ -4,7 +4,7 @@ require_once '../../config/config.php';
 require_once '../../models/Quiz.php';
 include '../../includes/header.php';
 
-if(!isset($_SESSION['admin_id'])) redirect('login.php');
+if(!isset($_SESSION['admin_id'])) redirect('views/admin/login.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = sanitize($_POST['title']);

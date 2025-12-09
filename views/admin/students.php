@@ -3,7 +3,7 @@ require_once '../../config/config.php';
 require_once '../../models/Student.php';
 
 if(!isset($_SESSION['admin_id'])) {
-    redirect('../admin/login.php');
+    redirect('views/admin/login.php');
 }
 
 $studentModel = new Student();
@@ -64,7 +64,6 @@ $isAdmin = true;
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Grade</th>
                                     <th>Section</th>
                                     <th>Type</th>
                                     <th>Registered</th>
@@ -86,7 +85,6 @@ $isAdmin = true;
                                             <td>
                                                 <strong><?php echo htmlspecialchars($student['name']); ?></strong>
                                             </td>
-                                            <td><?php echo htmlspecialchars($student['grade']); ?></td>
                                             <td><?php echo htmlspecialchars($student['section']); ?></td>
                                             <td>
                                                 <?php if($student['is_guest']): ?>
@@ -129,25 +127,25 @@ $isAdmin = true;
                     <span>&times;</span>
                 </button>
             </div>
-            <form method="POST" action="save-student.php">
+            <form method="POST" action="/student/register.php">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Full Name *</label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Grade *</label>
-                        <select name="grade" class="form-control" required>
-                            <option value="">Select Grade</option>
-                            <option>Grade 7</option>
-                            <option>Grade 8</option>
-                            <option>Grade 9</option>
-                            <option>Grade 10</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label>Section *</label>
-                        <input type="text" name="section" class="form-control" required>
+                        <select name="section" class="form-control form-control-lg" required>
+                            <option value="">Select</option>
+                            <option>Diamond</option>
+                            <option>Ruby</option>
+                            <option>Jade</option>
+                            <option>Garnet</option>
+                            <option>Emerald</option>
+                            <option>Topaz</option>
+                            <option>Sapphire</option>
+                            <option>Pearl</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Password (Optional)</label>

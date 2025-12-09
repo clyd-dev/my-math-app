@@ -55,7 +55,10 @@ function sanitize($data) {
 }
 
 function redirect($url) {
-    header("Location: " . $url);
+    if (!preg_match('/^http/', $url)) {
+        $url = APP_URL . '/' . ltrim($url, '/');
+    }
+    header("Location: $url");
     exit();
 }
 
@@ -76,6 +79,8 @@ function isStudent() {
 }
 
 // Start session
-session_name(SESSION_NAME);
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_name(SESSION_NAME);
+    session_start();
+}
 ?>

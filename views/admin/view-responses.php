@@ -3,7 +3,7 @@ require_once '../../config/config.php';
 require_once '../../models/Quiz.php';
 
 if(!isset($_SESSION['admin_id'])) {
-    redirect('../admin/login.php');
+    redirect('views/admin/login.php');
 }
 
 $quizId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -113,7 +113,7 @@ $isAdmin = true;
                             <tr>
                                 <th>#</th>
                                 <th>Student Name</th>
-                                <th>Grade & Section</th>
+                                <th>Section</th>
                                 <th>Score</th>
                                 <th>Percentage</th>
                                 <th>Submitted</th>
@@ -125,7 +125,7 @@ $isAdmin = true;
                                 <tr>
                                     <td><?php echo $index + 1; ?></td>
                                     <td><strong><?php echo htmlspecialchars($response['name']); ?></strong></td>
-                                    <td><?php echo htmlspecialchars($response['grade'] . ' - ' . $response['section']); ?></td>
+                                    <td><?php echo htmlspecialchars($response['section']); ?></td>
                                     <td>
                                         <span class="badge badge-lg badge-primary">
                                             <?php echo $response['score']; ?>/<?php echo $response['total_questions']; ?>

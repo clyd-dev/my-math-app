@@ -4,7 +4,7 @@ require_once '../../config/config.php';
 require_once '../../models/Student.php';
 
 if(isset($_SESSION['student_id'])) {
-    redirect('dashboard.php');
+    redirect('views/student/dashboard.php');
 }
 
 $error = '';
@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $studentModel = new Student();
     if($studentModel->login($name, $password)) {
-        redirect('dashboard.php');
+        redirect('views/student/dashboard.php');
     } else {
         $error = 'Invalid name or password';
     }

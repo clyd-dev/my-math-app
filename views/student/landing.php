@@ -4,7 +4,7 @@ require_once '../../config/config.php';
 
 // Redirect if already logged in
 if(isset($_SESSION['student_id'])) {
-    redirect('dashboard.php');
+    redirect('views/student/dashboard.php');
 }
 
 $pageTitle = 'Welcome';
@@ -94,18 +94,17 @@ $isAdmin = false;
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <select name="grade" class="form-control" required>
-                                                <option value="">Select Grade</option>
-                                                <option>Grade 7</option>
-                                                <option>Grade 8</option>
-                                                <option>Grade 9</option>
-                                                <option>Grade 10</option>
+                                            <select name="section" class="form-control form-control-lg" placeholder="" required>
+                                                <option value="">Section</option>
+                                                <option>Diamond</option>
+                                                <option>Ruby</option>
+                                                <option>Jade</option>
+                                                <option>Garnet</option>
+                                                <option>Emerald</option>
+                                                <option>Topaz</option>
+                                                <option>Saphirre</option>
+                                                <option>Pearl</option>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <input type="text" name="section" class="form-control" placeholder="Section" required>
                                         </div>
                                     </div>
                                 </div>
@@ -157,23 +156,32 @@ $isAdmin = false;
 
 <script>
 function toggleForm(formType) {
-    // Hide all forms first
-    document.querySelectorAll('.action-form').forEach(function(form) {
-        form.style.display = 'none';
-    });
-    
-    // Show selected form
     var formId = formType + 'Form';
-    var form = document.getElementById(formId);
-    if(form) {
-        form.style.display = 'block';
-    }
+    var selectedForm = document.getElementById(formId);
+
+    document.querySelectorAll('.action-form').forEach(function(form) {
+        if (form !== selectedForm) {
+            form.style.display = 'none';
+        }
+    });
+
+    // Toggle only the selected form
+    selectedForm.style.display = (selectedForm.style.display === 'block') ? 'none' : 'block';
 }
+
 
 // Auto-uppercase quiz code
 document.getElementById('quizCode').addEventListener('input', function() {
     this.value = this.value.toUpperCase();
 });
+
+// Prevent form clicks from closing the form
+document.querySelectorAll('.action-form').forEach(function(form){
+    form.addEventListener('click', function(e){
+        e.stopPropagation();
+    });
+});
+
 </script>
 
 <?php include '../../includes/footer.php'; ?>

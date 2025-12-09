@@ -12,7 +12,6 @@ $success = '';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = sanitize($_POST['name']);
-    $grade = sanitize($_POST['grade']);
     $section = sanitize($_POST['section']);
     $password = $_POST['password'];
     
@@ -20,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = 'Password must be at least 6 characters long';
     } else {
         $studentModel = new Student();
-        if($studentModel->register($name, $grade, $section, $password)) {
+        if($studentModel->register($name, $section,  $password)) {
             $success = 'Registration successful! Please login.';
         } else {
             $error = 'Registration failed. Please try again.';
@@ -68,20 +67,18 @@ include '../../includes/header.php';
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Grade *</label>
-                                            <select name="grade" class="form-control form-control-lg" required>
-                                                <option value="">Select Grade</option>
-                                                <option>Grade 7</option>
-                                                <option>Grade 8</option>
-                                                <option>Grade 9</option>
-                                                <option>Grade 10</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label>Section *</label>
-                                            <input type="text" name="section" class="form-control form-control-lg" required>
+                                            <select name="section" class="form-control form-control-lg" required>
+                                                <option value="">Select</option>
+                                                <option>Diamond</option>
+                                                <option>Ruby</option>
+                                                <option>Jade</option>
+                                                <option>Garnet</option>
+                                                <option>Emerald</option>
+                                                <option>Topaz</option>
+                                                <option>Saphirre</option>
+                                                <option>Pearl</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
