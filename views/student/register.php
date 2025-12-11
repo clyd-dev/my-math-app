@@ -1,9 +1,12 @@
 <?php
-// ===== FILE: views/student/register.php =====
+// views/student/register.php - UPDATED WITH CONTROLLER
 require_once '../../config/config.php';
-require_once '../../models/Student.php';
+require_once '../../controllers/StudentController.php';
 
-if(isset($_SESSION['student_id'])) {
+$studentController = new StudentController();
+
+// Redirect if already logged in
+if($studentController->isLoggedIn()) {
     header("Location: " . APP_URL . "/views/student/dashboard.php");
     exit();
 }
@@ -16,22 +19,31 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $section = sanitize($_POST['section']);
     $password = $_POST['password'];
     
-    if(strlen($password) < 6) {
-        $error = 'Password must be at least 6 characters long';
+    $result = $studentController->register($name, $section, $password);
+    
+    if($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header("Location: " . APP_URL . "/views/student/login.php");
+        exit();
     } else {
-        $studentModel = new Student();
-        if($studentModel->register($name, $section,  $password)) {
-            $success = 'Registration successful! Please login.';
-        } else {
-            $error = 'Registration failed. Please try again.';
-        }
+        $error = $result['message'];
     }
 }
 
 $pageTitle = 'Student Registration';
 $isAdmin = false;
-include '../../includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $pageTitle; ?></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/student-style.css">
+</head>
+<body>
 
 <div class="landing-container">
     <div class="container mt-5 pt-5">
@@ -43,62 +55,73 @@ include '../../includes/header.php';
                     </div>
                     <div class="card-body p-4">
                         <?php if($error): ?>
-                            <div class="alert alert-danger"><?php echo $error; ?></div>
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
                         <?php endif; ?>
                         
-                        <?php if($success): ?>
-                            <div class="alert alert-success">
-                                <?php echo $success; ?>
-                                <br>
-                                <a href="<?php echo APP_URL; ?>/views/student/login.php" class="btn btn-primary btn-sm mt-2">Login Now</a>
+                        <div class="text-center mb-4">
+                            <div class="teacher-avatar" style="width: 100px; height: 100px; margin: 0 auto; font-size: 50px;">
+                                🎓
                             </div>
-                        <?php else: ?>
-                            <div class="text-center mb-4">
-                                <div class="teacher-avatar" style="width: 100px; height: 100px; margin: 0 auto; font-size: 50px;">
-                                    🎓
-                                </div>
-                                <p class="text-muted mt-3">Join Math Adventure and start learning!</p>
+                            <p class="text-muted mt-3">Join Math Adventure and start learning!</p>
+                        </div>
+                        
+                        <form method="POST" id="registerForm">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Full Name *</label>
+                                <input type="text" name="name" class="form-control form-control-lg" 
+                                       placeholder="Enter your full name" required minlength="2" autofocus>
+                                <small class="form-text text-muted">At least 2 characters</small>
                             </div>
                             
-                            <form method="POST">
-                                <div class="form-group">
-                                    <label>Full Name *</label>
-                                    <input type="text" name="name" class="form-control form-control-lg" required>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Section *</label>
-                                            <select name="section" class="form-control form-control-lg" required>
-                                                <option value="">Select</option>
-                                                <option>Diamond</option>
-                                                <option>Ruby</option>
-                                                <option>Jade</option>
-                                                <option>Garnet</option>
-                                                <option>Emerald</option>
-                                                <option>Topaz</option>
-                                                <option>Saphirre</option>
-                                                <option>Pearl</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Password * (at least 6 characters)</label>
-                                    <input type="password" name="password" class="form-control form-control-lg" required minlength="6">
-                                </div>
-                                <button type="submit" class="btn btn-gradient-green btn-block btn-lg">
-                                    <i class="fas fa-user-plus"></i> Register Now
-                                </button>
-                            </form>
-                        <?php endif; ?>
+                            <div class="form-group">
+                                <label><i class="fas fa-users"></i> Section *</label>
+                                <select name="section" class="form-control form-control-lg" required>
+                                    <option value="">Select Section</option>
+                                    <option value="Diamond">Diamond</option>
+                                    <option value="Ruby">Ruby</option>
+                                    <option value="Jade">Jade</option>
+                                    <option value="Garnet">Garnet</option>
+                                    <option value="Emerald">Emerald</option>
+                                    <option value="Topaz">Topaz</option>
+                                    <option value="Sapphire">Sapphire</option>
+                                    <option value="Pearl">Pearl</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Password * (minimum 6 characters)</label>
+                                <input type="password" name="password" id="password" class="form-control form-control-lg" 
+                                       placeholder="Create a password" required minlength="6">
+                                <small class="form-text text-muted">Must be at least 6 characters long</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Confirm Password *</label>
+                                <input type="password" name="confirm_password" id="confirm_password" 
+                                       class="form-control form-control-lg" placeholder="Confirm your password" required>
+                                <small id="password-match" class="form-text"></small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-gradient-green btn-block btn-lg">
+                                <i class="fas fa-user-plus"></i> Register Now
+                            </button>
+                        </form>
                         
                         <hr>
                         
                         <div class="text-center">
                             <p class="mb-2">Already have an account?</p>
-                            <a href="<?php echo APP_URL; ?>/views/student/login.php" class="btn btn-outline-primary">Login Here</a>
-                            <a href="<?php echo APP_URL; ?>/views/student/landing.php" class="btn btn-outline-secondary ml-2">Back to Home</a>
+                            <a href="<?php echo APP_URL; ?>/views/student/login.php" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-in-alt"></i> Login Here
+                            </a>
+                            <a href="<?php echo APP_URL; ?>/views/student/landing.php" class="btn btn-outline-secondary ml-2">
+                                <i class="fas fa-home"></i> Back to Home
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -107,4 +130,39 @@ include '../../includes/header.php';
     </div>
 </div>
 
-<?php include '../../includes/footer.php'; ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/student-script.js"></script>
+<script>
+// Password confirmation validation
+$(document).ready(function() {
+    $('#confirm_password').on('keyup', function() {
+        var password = $('#password').val();
+        var confirmPassword = $(this).val();
+        
+        if (confirmPassword) {
+            if (password === confirmPassword) {
+                $('#password-match').html('<span class="text-success"><i class="fas fa-check"></i> Passwords match</span>');
+            } else {
+                $('#password-match').html('<span class="text-danger"><i class="fas fa-times"></i> Passwords do not match</span>');
+            }
+        } else {
+            $('#password-match').html('');
+        }
+    });
+    
+    // Validate on submit
+    $('#registerForm').on('submit', function(e) {
+        var password = $('#password').val();
+        var confirmPassword = $('#confirm_password').val();
+        
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+            return false;
+        }
+    });
+});
+</script>
+</body>
+</html>

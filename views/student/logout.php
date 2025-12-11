@@ -1,20 +1,21 @@
 <?php
+// views/student/logout.php - UPDATED WITH CONTROLLER
 require_once '../../config/config.php';
+require_once '../../controllers/StudentController.php';
 
-session_start();
+$studentController = new StudentController();
 
-// Destroy ALL session data
-$_SESSION = [];
-session_unset();
-session_destroy();
+// Perform logout
+$result = $studentController->logout();
 
-// delete cookie
-if (isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time() - 3600, '/');
+// Set success message
+if($result['success']) {
+    // Start new session to store flash message
+    session_start();
+    $_SESSION['success_message'] = 'You have been logged out successfully. See you next time! 👋';
 }
 
 // Redirect to landing page
 header("Location: " . APP_URL . "/views/student/landing.php");
 exit();
-
 ?>

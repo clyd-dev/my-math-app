@@ -133,7 +133,7 @@ $isAdmin = false;
                         <div class="action-form" id="guestForm" style="display: none;">
                             <form method="GET" action="guest-quiz.php">
                                 <div class="form-group">
-                                    <input type="text" name="code" id="quizCode" class="form-control" placeholder="Enter Quiz Code (e.g., ABC12345)" required maxlength="8">
+                                    <input type="text" name="code" id="quizCode" class="form-control" placeholder="Enter Quiz Code (e.g., ABC12345)" required>
                                 </div>
                                 <button type="submit" class="btn btn-gradient-blue btn-block">
                                     <i class="fas fa-rocket"></i> Join Quiz
@@ -171,9 +171,9 @@ function toggleForm(formType) {
 
 
 // Auto-uppercase quiz code
-document.getElementById('quizCode').addEventListener('input', function() {
-    this.value = this.value.toUpperCase();
-});
+// document.getElementById('quizCode').addEventListener('input', function() {
+//     this.value = this.value.toUpperCase();
+// });
 
 // Prevent form clicks from closing the form
 document.querySelectorAll('.action-form').forEach(function(form){
