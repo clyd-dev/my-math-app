@@ -89,7 +89,7 @@ $isAdmin = true;
                                         <a href="view-quiz.php?id=<?php echo $quiz['id']; ?>" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i> View
                                         </a>
-                                        <a href="quiz-builder.php?id=<?php echo $quiz['id']; ?>" class="btn btn-sm btn-warning">
+                                        <a href="edit-quiz.php?id=<?php echo $quiz['id']; ?>" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
                                         <a href="view-responses.php?id=<?php echo $quiz['id']; ?>" class="btn btn-sm btn-success">

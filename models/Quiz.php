@@ -31,7 +31,7 @@ class Quiz {
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
-    
+
     public function getByShareCode($code) {
         $stmt = $this->db->prepare("SELECT * FROM quizzes WHERE share_code = ? AND status='active'");
         $stmt->execute([$code]);

@@ -8,6 +8,13 @@ $studentController = new StudentController();
 $quizModel = new Quiz();
 
 $shareCode = isset($_GET['code']) ? strtoupper(sanitize($_GET['code'])) : '';
+if (strpos($shareCode, '?') !== false) {
+    // extract only last value after last "="
+    $parts = explode('=', $shareCode);
+    $shareCode = end($parts);
+}
+
+$shareCode = strtoupper(trim($shareCode));
 $error = '';
 
 if(empty($shareCode)) {

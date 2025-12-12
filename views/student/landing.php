@@ -171,9 +171,9 @@ function toggleForm(formType) {
 
 
 // Auto-uppercase quiz code
-// document.getElementById('quizCode').addEventListener('input', function() {
-//     this.value = this.value.toUpperCase();
-// });
+document.getElementById('quizCode').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+});
 
 // Prevent form clicks from closing the form
 document.querySelectorAll('.action-form').forEach(function(form){
@@ -183,5 +183,19 @@ document.querySelectorAll('.action-form').forEach(function(form){
 });
 
 </script>
+
+<div class="text-center mt-4">
+    <a href="../admin/login.php"
+       style="
+           font-size: 13px; 
+           color: #ffffff; 
+           opacity: 0.6; 
+           text-decoration: none;
+       "
+       onmouseover="this.style.opacity='1'"
+       onmouseout="this.style.opacity='0.6'">
+        Teacher Login
+    </a>
+</div>
 
 <?php include '../../includes/footer.php'; ?>
