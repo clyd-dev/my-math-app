@@ -2,6 +2,7 @@
 // views/student/register.php - UPDATED WITH CONTROLLER
 require_once '../../config/config.php';
 require_once '../../controllers/StudentController.php';
+require_once '../../models/Section.php';  // ADD THIS
 
 $studentController = new StudentController();
 
@@ -78,20 +79,18 @@ $isAdmin = false;
                                 <small class="form-text text-muted">At least 2 characters</small>
                             </div>
                             
-                            <div class="form-group">
-                                <label><i class="fas fa-users"></i> Section *</label>
-                                <select name="section" class="form-control form-control-lg" required>
-                                    <option value="">Select Section</option>
-                                    <option value="Diamond">Diamond</option>
-                                    <option value="Ruby">Ruby</option>
-                                    <option value="Jade">Jade</option>
-                                    <option value="Garnet">Garnet</option>
-                                    <option value="Emerald">Emerald</option>
-                                    <option value="Topaz">Topaz</option>
-                                    <option value="Sapphire">Sapphire</option>
-                                    <option value="Pearl">Pearl</option>
-                                </select>
-                            </div>
+                         <div class="form-group">
+    <label>Section *</label>
+    <select name="section" class="form-control form-control-lg" required>
+        <option value="">Choose your section</option>
+        <?php
+        $sectionModel = new Section();
+        foreach($sectionModel->getAll() as $s) {
+            echo '<option value="'.htmlspecialchars($s['name']).'">'.htmlspecialchars($s['name']).'</option>';
+        }
+        ?>
+    </select>
+</div>
                             
                             <div class="form-group">
                                 <label><i class="fas fa-lock"></i> Password * (minimum 6 characters)</label>

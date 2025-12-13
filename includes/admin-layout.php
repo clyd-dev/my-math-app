@@ -99,6 +99,14 @@ if(!isset($_SESSION['admin_id'])) {
                     <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'sections.php' ? 'active' : ''; ?>" 
+                href="<?php echo APP_URL; ?>/views/admin/sections.php">
+                    <i class="fas fa-layer-group mr-2"></i> Sections
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'students.php' ? 'active' : ''; ?>" 
                    href="<?php echo APP_URL; ?>/views/admin/students.php">

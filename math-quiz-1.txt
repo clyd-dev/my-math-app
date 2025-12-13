@@ -1,0 +1,345 @@
+:root {
+        --primary: #4f46e5; /* deeper academic purple */
+        --secondary: #6366f1;
+        --success: #16a34a;
+        --danger: #dc2626;
+        --warning: #f59e0b;
+        --info: #3b82f6;
+        --light: #f9fafb;
+        --dark: #111827;
+
+        --card-bg: #ffffff;
+        --card-shadow: rgba(0, 0, 0, 0.08);
+        --border-soft: #e5e7eb;
+        --radius-lg: 20px;
+        --transition-fast: 0.25s ease;
+    }
+
+    /* Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Background */
+    body {
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background: #f3f4f6;
+        color: var(--dark);
+        min-height: 100vh;
+        line-height: 1.6;
+    }
+
+    /* =============================
+    REFINED LANDING PAGE
+    ============================= */
+
+    .landing-container {
+        min-height: 100vh;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Remove heavy animations and over-floating shapes */
+    .math-symbols {
+        display: none;
+    }
+
+    /* Teacher Section */
+    .teacher-section {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 35px;
+        box-shadow: 0 8px 25px var(--card-shadow);
+        animation: fadeIn 0.6s ease;
+    }
+
+    .teacher-avatar {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: #eef2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 60px;
+        margin: 0 auto 20px;
+    }
+
+    .teacher-message {
+        background: #eef2ff;
+        padding: 20px;
+        border-radius: var(--radius-lg);
+        text-align: center;
+    }
+
+    /* =============================
+    ACTION CARDS (Login, Register)
+    ============================= */
+
+    .action-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        cursor: pointer;
+        transition: var(--transition-fast);
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 4px 12px var(--card-shadow);
+    }
+
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px var(--card-shadow);
+    }
+
+    .action-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 14px;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        font-size: 26px;
+    }
+
+    /* =============================
+    FORMS
+    ============================= */
+
+    .form-control {
+        border-radius: 10px;
+        border: 1.8px solid #d1d5db;
+        padding: 14px;
+        font-size: 1rem;
+        transition: var(--transition-fast);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+    }
+
+    /* Modern Academic Buttons */
+    .btn-gradient-purple,
+    .btn-gradient-green,
+    .btn-gradient-blue {
+        padding: 14px 26px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+        transition: var(--transition-fast);
+    }
+
+    .btn-gradient-purple {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-gradient-purple:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+    }
+
+    /* =============================
+    DASHBOARD
+    ============================= */
+
+    .student-dashboard {
+        padding: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .dashboard-header {
+        background: var(--card-bg);
+        padding: 35px;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 5px 20px var(--card-shadow);
+        margin-bottom: 30px;
+    }
+
+    .welcome-text {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .dashboard-subtitle {
+        font-size: 17px;
+        color: #6b7280;
+    }
+
+    /* =============================
+    QUIZ CARDS
+    ============================= */
+
+    .quiz-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 25px;
+    }
+
+    .quiz-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 25px;
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 5px 15px var(--card-shadow);
+        transition: var(--transition-fast);
+    }
+
+    .quiz-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+        border-color: var(--primary);
+    }
+
+    .quiz-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--primary);
+        border-radius: 16px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 18px;
+        font-size: 30px;
+    }
+
+    .quiz-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .quiz-description {
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
+
+    .btn-start-quiz {
+        background: var(--primary);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        margin-top: 12px;
+        font-weight: 600;
+        display: block;
+        text-align: center;
+    }
+
+    .btn-start-quiz:hover {
+        background: var(--secondary);
+    }
+
+    /* =============================
+    QUIZ TAKING INTERFACE
+    ============================= */
+
+    .quiz-container {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .question-card {
+        background: var(--card-bg);
+        padding: 35px;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 5px 15px var(--card-shadow);
+    }
+
+    .question-text {
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    /* Choices */
+    .choice-btn {
+        padding: 18px 22px;
+        background: white;
+        border: 2px solid var(--border-soft);
+        border-radius: 14px;
+        font-size: 17px;
+        font-weight: 500;
+        transition: var(--transition-fast);
+    }
+
+    .choice-btn:hover {
+        border-color: var(--primary);
+        background: #f9fafb;
+        transform: translateX(6px);
+    }
+
+    .choice-btn.selected {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+    /* Navigation */
+    .quiz-navigation {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    /* =============================
+    RESULTS PAGE
+    ============================= */
+
+    .results-header {
+        background: var(--card-bg);
+        padding: 50px;
+        border-radius: 30px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        text-align: center;
+    }
+
+    .score-number-large {
+        font-size: 64px;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    /* Review section */
+    .review-section {
+        background: var(--card-bg);
+        padding: 35px;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 5px 20px var(--card-shadow);
+    }
+
+    /* Correct / Incorrect */
+    .review-item.correct {
+        background: #ecfdf5;
+        border-left: 5px solid var(--success);
+    }
+
+    .review-item.incorrect {
+        background: #fef2f2;
+        border-left: 5px solid var(--danger);
+    }
+
+    /* =============================
+    RESPONSIVENESS
+    ============================= */
+
+    @media (max-width: 768px) {
+        .quiz-navigation {
+            flex-direction: column;
+        }
+        .score-number-large {
+            font-size: 48px;
+        }
+        .question-text {
+            font-size: 19px;
+        }
+    }

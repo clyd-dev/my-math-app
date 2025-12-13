@@ -94,6 +94,7 @@ class StudentController {
             // Set session for guest
             $_SESSION['student_id'] = $studentId;
             $_SESSION['student_name'] = $name;
+            $_SESSION['student_section'] = $student['section'];
             $_SESSION['is_guest'] = true;
             
             return ['success' => true, 'student_id' => $studentId, 'message' => 'Guest account created'];
@@ -196,6 +197,7 @@ class StudentController {
         return [
             'id' => $_SESSION['student_id'],
             'name' => $_SESSION['student_name'],
+             'section'  => $_SESSION['student_section'],
             'is_guest' => isset($_SESSION['is_guest']) ? $_SESSION['is_guest'] : false
         ];
     }

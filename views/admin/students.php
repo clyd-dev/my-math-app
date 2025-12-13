@@ -1,10 +1,12 @@
 <?php
-// views/admin/students.php - UPDATED WITH CONTROLLER
+// views/admin/students.php - FIXED: Section dropdown in "Add Student" modal
 require_once '../../config/config.php';
 require_once '../../controllers/StudentController.php';
+require_once '../../models/Section.php';   // ← THIS WAS MISSING!
 
-// Initialize controller
 $studentController = new StudentController();
+$sectionModel = new Section();               // Now we can get sections
+$sections = $sectionModel->getAll();
 
 // Handle Add Student Form Submission
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_student'])) {
@@ -13,10 +15,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_student'])) {
     $password = isset($_POST['password']) && !empty($_POST['password']) ? $_POST['password'] : null;
     
     if($password) {
-        // Register with password
         $result = $studentController->register($name, $section, $password);
     } else {
-        // Create as guest (admin can add without password)
         $result = $studentController->createGuest($name, $section);
     }
     
@@ -26,11 +26,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_student'])) {
         $_SESSION['error_message'] = $result['message'];
     }
     
-    header("Location: " . APP_URL . "/views/admin/students.php");
+    header("Location: students.php");
     exit();
 }
 
-// Get all students using controller
 $students = $studentController->getAllStudents();
 $totalStudents = $studentController->countStudents();
 $registeredCount = $studentController->countRegisteredStudents();
@@ -39,7 +38,6 @@ $guestCount = $studentController->countGuestStudents();
 $pageTitle = 'Manage Students';
 include '../../includes/admin-layout.php';
 ?>
-
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="row mb-4">
@@ -166,55 +164,50 @@ include '../../includes/admin-layout.php';
 </div>
 
 <!-- Add Student Modal -->
-<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-user-plus"></i> Add New Student</h5>
-                <button type="button" class="close text-white" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <form method="POST">
+<div class="modal fade" id="addStudentModal">
+    <div class="modal-dialog modal-lg">
+        <form method="POST">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Add New Student</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">×</button>
+                </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Full Name *</label>
-                        <input type="text" name="name" class="form-control" required>
-                        <small class="form-text text-muted">Enter the student's full name</small>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name *</label>
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Section *</label>
+                                <select name="section" class="form-control" required>
+                                    <option value="">Choose Section</option>
+                                    <?php foreach($sections as $sec): ?>
+                                        <option value="<?php echo htmlspecialchars($sec['name']); ?>">
+                                            <?php echo htmlspecialchars($sec['name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Section *</label>
-                        <select name="section" class="form-control" required>
-                            <option value="">Select Section</option>
-                            <option>Diamond</option>
-                            <option>Ruby</option>
-                            <option>Jade</option>
-                            <option>Garnet</option>
-                            <option>Emerald</option>
-                            <option>Topaz</option>
-                            <option>Sapphire</option>
-                            <option>Pearl</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Password (Optional)</label>
-                        <input type="password" name="password" class="form-control" minlength="6">
-                        <small class="form-text text-muted">
-                            Leave blank to create as guest. Student can set password during registration.
-                        </small>
+                        <label>Password (leave blank = guest account)</label>
+                        <input type="password" name="password" class="form-control" placeholder="Min 6 characters">
+                        <small class="text-muted">If blank → student can login without password (guest mode)</small>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" name="add_student" class="btn btn-success">
-                        <i class="fas fa-plus"></i> Add Student
-                    </button>
+                    <button type="submit" name="add_student" class="btn btn-success">Add Student</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
-
 <script>
 // Search functionality
 function searchTable() {

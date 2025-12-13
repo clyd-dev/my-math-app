@@ -38,6 +38,13 @@ $isAdmin = true;
                 <?php if(empty($quizzes)): ?>
                     <div class="col-12">
                         <div class="card shadow-lg text-center py-5">
+                            <?php if(!empty($quiz['section'])): ?>
+    <div class="text-center mb-2">
+        <span class="badge badge-pill badge-primary">
+            <?php echo htmlspecialchars($quiz['section']); ?>
+        </span>
+    </div>
+<?php endif; ?>
                             <div class="card-body">
                                 <i class="fas fa-clipboard-list fa-5x text-muted mb-4"></i>
                                 <h3 class="text-muted">No Quizzes Yet</h3>
@@ -49,6 +56,7 @@ $isAdmin = true;
                         </div>
                     </div>
                 <?php else: ?>
+                    <!-- ------- -->
                     <?php foreach($quizzes as $quiz): ?>
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card shadow-lg h-100 quiz-card-admin">
@@ -65,7 +73,11 @@ $isAdmin = true;
                                             <?php echo date('F d, Y', strtotime($quiz['date'])); ?>
                                         </small>
                                     </div>
-                                    
+                                    <?php if(!empty($quiz['section'])): ?>
+                                    <span class="badge badge-primary mb-2" style="font-size: 0.9rem;">
+                                        Section: <?php echo htmlspecialchars($quiz['section']); ?>
+                                    </span>
+                                    <?php endif; ?>
                                     <?php if($quiz['topic']): ?>
                                         <p class="mb-2">
                                             <strong>Topic:</strong> <?php echo htmlspecialchars($quiz['topic']); ?>
@@ -103,6 +115,7 @@ $isAdmin = true;
                             </div>
                         </div>
                     <?php endforeach; ?>
+                    <!-- ------- -->
                 <?php endif; ?>
             </div>
         </div>

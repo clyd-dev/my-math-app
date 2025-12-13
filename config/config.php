@@ -9,7 +9,7 @@ define('DB_NAME', 'math_quiz_game');
 
 // Application Configuration
 define('APP_NAME', 'Math Adventure Quiz Game');
-define('APP_URL', 'http://localhost/math-quiz');
+define('APP_URL', 'http://localhost/my-math-app');
 
 // Session Configuration
 define('SESSION_NAME', 'math_quiz_session');
