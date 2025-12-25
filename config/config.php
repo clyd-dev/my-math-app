@@ -1,8 +1,9 @@
 <?php
 // config.php - Database Configuration for Wasmer.io
 
-// Database Configuration - Read from environment or fallback to defaults
-define('DB_HOST', getenv('DB_HOST') ?: 'db.fr-pari1.bengt.wasmernet.com:10272');
+// Database Configuration
+define('DB_HOST', getenv('DB_HOST') ?: 'db.fr-pari1.bengt.wasmernet.com');
+define('DB_PORT', getenv('DB_PORT') ?: '10272');
 define('DB_USER', getenv('DB_USER') ?: 'caeffd9273c18000685af25dc504');
 define('DB_PASS', getenv('DB_PASS') ?: '0694caef-fd92-7876-8000-06aa1f8d0f1c');
 define('DB_NAME', getenv('DB_NAME') ?: 'db9Adrv8bASbEuJEJtRS8rQy');
@@ -29,22 +30,40 @@ class Database {
     
     private function __construct() {
         try {
-            $this->conn = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-                DB_USER,
-                DB_PASS,
-                array(
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES => false,
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
-                )
+            // Build DSN with proper port handling
+            $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+            
+            // Connection options with timeout and SSL settings
+            $options = array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_PERSISTENT => false, // Disable persistent connections
+                PDO::ATTR_TIMEOUT => 10, // Connection timeout in seconds
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci",
+                PDO::MYSQL_ATTR_CONNECT_TIMEOUT => 10,
+                PDO::MYSQL_ATTR_READ_TIMEOUT => 30,
+                PDO::MYSQL_ATTR_WRITE_TIMEOUT => 30,
             );
+            
+            // Try with SSL first (Wasmer databases often require SSL)
+            try {
+                $sslOptions = $options;
+                $sslOptions[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                $this->conn = new PDO($dsn, DB_USER, DB_PASS, $sslOptions);
+            } catch(PDOException $sslError) {
+                // If SSL fails, try without SSL
+                error_log("SSL connection failed, trying without SSL: " . $sslError->getMessage());
+                $this->conn = new PDO($dsn, DB_USER, DB_PASS, $options);
+            }
+            
         } catch(PDOException $e) {
             error_log("Database Connection Error: " . $e->getMessage());
             
             if (APP_ENV === 'development') {
-                die("Connection failed: " . $e->getMessage());
+                die("Connection failed: " . $e->getMessage() . "<br><br>" .
+                    "DSN: mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . "<br>" .
+                    "User: " . DB_USER);
             } else {
                 die("Database connection error. Please contact support.");
             }
@@ -60,6 +79,16 @@ class Database {
     
     public function getConnection() {
         return $this->conn;
+    }
+    
+    // Add ping method to check connection
+    public function ping() {
+        try {
+            $this->conn->query('SELECT 1');
+            return true;
+        } catch(PDOException $e) {
+            return false;
+        }
     }
 }
 
