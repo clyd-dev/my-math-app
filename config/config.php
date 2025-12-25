@@ -2,10 +2,10 @@
 // config.php - Database Configuration
 
 // Database Configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'math_quiz_game');
+define('DB_HOST', 'db.fr-pari1.bengt.wasmernet.com');
+define('DB_USER', 'caeffd9273c18000685af25dc504');
+define('DB_PASS', '0694caef-fd92-7876-8000-06aa1f8d0f1c');
+define('DB_NAME', 'db9Adrv8bASbEuJEJtRS8rQy');
 
 // Application Configuration
 define('APP_NAME', 'Math Adventure Quiz Game');
